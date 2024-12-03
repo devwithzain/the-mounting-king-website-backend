@@ -19,6 +19,7 @@ class SendContactFormRequest extends FormRequest
             'selectedDate' => 'required|array',
             'selectedDate.day' => 'required|string',
             'selectedDate.date' => 'required|string',
+            'selectedDate.time' => 'required|string',
             'selectedAddress' => 'required|array',
             'selectedAddress.address' => 'required|string|max:255',
             'selectedAddress.aptUnitFloor' => 'nullable|string|max:255',

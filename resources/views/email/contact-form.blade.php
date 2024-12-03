@@ -26,7 +26,7 @@
 
 @if($selectedDate)
   <h3>Appointment Date:</h3>
-  <p>{{ $selectedDate['day'] }}, {{ $selectedDate['date'] }}</p>
+  <p>{{ $selectedDate['day'] }}, {{ $selectedDate['date'] }}, {{ $selectedDate['time'] }}</p>
 @endif
 
 @if($selectedAddress)
