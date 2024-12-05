@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\FormController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AdvantageController;
 use App\Http\Controllers\Api\HomeServiceController;
 use App\Http\Controllers\Api\ContactFormController;
@@ -10,6 +11,15 @@ use App\Http\Controllers\Api\ContactFormController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+Route::post("/login", [AuthController::class, "login"]);
+Route::post("/register", [AuthController::class, "register"]);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post("/logout", [AuthController::class, "logout"]);
+    Route::get("/profile", [AuthController::class, "profile"]);
+    Route::patch('/profile/update', [AuthController::class, 'updateProfile']);
+    Route::delete('/profile/delete', [AuthController::class, 'deleteAccount']);
+});
 
 Route::post('/contact', [FormController::class, 'sendContactForm']);
 Route::post('/contact-us', [ContactFormController::class, 'sendForm']);
