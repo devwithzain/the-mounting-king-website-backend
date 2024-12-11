@@ -26,6 +26,7 @@ class ProductController extends Controller
 
             $title = $validated['title'];
             $price = $validated['price'];
+            $short_description = $validated['short_description'];
             $description = $validated['description'];
 
             $imageName = Str::random(32) . '.' . $request->image->getClientOriginalExtension();
@@ -34,6 +35,7 @@ class ProductController extends Controller
             $product = Product::create([
                 'title' => $title,
                 'price' => $price,
+                'short_description' => $short_description,
                 'description' => $description,
                 'image' => $imageName,
             ]);
@@ -101,7 +103,6 @@ class ProductController extends Controller
             ], 500);
         }
     }
-
     public function destroy(string $id)
     {
         $product = Product::find($id);
