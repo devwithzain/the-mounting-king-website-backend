@@ -5,11 +5,13 @@ use App\Http\Controllers\Api\FormController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\StripeController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\AdvantageController;
 use App\Http\Controllers\Api\HomeServiceController;
 use App\Http\Controllers\Api\ContactFormController;
 
+Route::post('/process-payment', [StripeController::class, 'processPayment'])->name('process.payment');
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -23,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart', [CartController::class, 'store']);
     Route::delete('/cart/{id}', [CartController::class, 'destroy']);
+    Route::delete('/cart', [CartController::class, 'deleteAll']);
 });
 
 Route::post("/login", [AuthController::class, "login"]);

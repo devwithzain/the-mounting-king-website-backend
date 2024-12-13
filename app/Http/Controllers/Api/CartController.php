@@ -18,7 +18,6 @@ class CartController extends Controller
     {
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
         ]);
 
         $cart = Cart::updateOrCreate(
@@ -26,10 +25,8 @@ class CartController extends Controller
                 'user_id' => Auth::id(),
                 'product_id' => $validated['product_id'],
             ],
-            ['quantity' => $validated['quantity']]
         );
-
-        return response()->json($cart, 201);
+        return response()->json(['cart' => $cart, 'success' => "Item added to cart."], 201);
     }
     public function destroy($id)
     {
@@ -37,9 +34,13 @@ class CartController extends Controller
 
         if ($cart) {
             $cart->delete();
-            return response()->json(['message' => 'Item removed from cart.']);
+            return response()->json(['success' => 'Item removed from cart.']);
         }
-
         return response()->json(['message' => 'Item not found.'], 404);
+    }
+    public function deleteAll()
+    {
+        Cart::where('user_id', Auth::id())->delete();
+        return response()->json(['success' => 'All items removed from cart.']);
     }
 }

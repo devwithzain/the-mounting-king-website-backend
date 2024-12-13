@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Product;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
@@ -21,34 +20,42 @@ class ProductController extends Controller
     }
     public function store(ProductRequest $request)
     {
-        try {
-            $validated = $request->validated();
+        // Handle the valid data from the request
+        $validatedData = $request->validated();
 
-            $title = $validated['title'];
-            $price = $validated['price'];
-            $short_description = $validated['short_description'];
-            $description = $validated['description'];
+        // Handle Image Uploads
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                // Generate a random name for the image
+                $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
 
-            $imageName = Str::random(32) . '.' . $request->image->getClientOriginalExtension();
-            Storage::disk('public')->put($imageName, file_get_contents($request->image));
+                // Store the image in the public directory
+                $imagePath = 'products/' . $imageName; // Store in the 'products' directory within public
+                Storage::disk('public')->put($imagePath, file_get_contents($image));
 
-            $product = Product::create([
-                'title' => $title,
-                'price' => $price,
-                'short_description' => $short_description,
-                'description' => $description,
-                'image' => $imageName,
-            ]);
-
-            return response()->json([
-                'success' => 'Product successfully created.',
-                'data' => new ProductResource($product),
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Something went wrong!',
-            ], 500);
+                // Save the image path in the array
+                $imagePaths[] = $imagePath;
+            }
         }
+
+        // Create the product in the database
+        $product = Product::create([
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'shortDescription' => $validatedData['shortDescription'],
+            'color' => $validatedData['color'],
+            'category' => $validatedData['category'],
+            'size' => $validatedData['size'],
+            'price' => $validatedData['price'],
+            'images' => json_encode($imagePaths), // Save the image paths as a JSON array
+        ]);
+
+        // Return a response
+        return response()->json([
+            'message' => 'Product created successfully.',
+            'product' => $product
+        ]);
     }
     public function show(string $id)
     {
@@ -60,7 +67,7 @@ class ProductController extends Controller
         }
 
         return response()->json([
-            'product' => new ProductResource($product)
+            'data' => new ProductResource($product)
         ], 200);
     }
     public function update(ProductRequest $request, string $id)

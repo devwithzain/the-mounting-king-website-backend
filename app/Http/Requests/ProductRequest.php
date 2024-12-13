@@ -11,9 +11,13 @@ class ProductRequest extends FormRequest
         return [
             'title' => 'required|string|max:258',
             'price' => 'required|string|max:258',
-            'short_description' => 'required|string',
+            'color' => 'required|string|max:258',
+            'size' => 'required|string|max:258',
+            'category' => 'required|string|max:258',
+            'shortDescription' => 'required|string',
             'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'images' => 'required|array|min:1', // Ensure at least one image is uploaded
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
         ];
     }
@@ -22,9 +26,15 @@ class ProductRequest extends FormRequest
         return [
             'title.required' => 'The title field is required!',
             'price.required' => 'The price field is required!',
+            'color.required' => 'The price color is required!',
+            'size.required' => 'The price size is required!',
+            'category.required' => 'The price category is required!',
             'description.required' => 'The description field is required!',
-            'short_description.required' => 'The short description field is required!',
-            'image.required' => 'The image field is required!',
+            'shortDescription.required' => 'The short description field is required!',
+            'images.required' => 'At least one image is required.',
+            'images.array' => 'Images must be an array.',
+            'images.*.image' => 'Each file must be an image.',
+            'images.*.mimes' => 'Only jpeg, png, jpg, gif, svg images are allowed.',
         ];
     }
 }
