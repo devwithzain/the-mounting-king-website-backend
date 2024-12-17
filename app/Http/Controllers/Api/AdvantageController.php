@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Advantage;
-use App\Models\HomeService;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\AdvantageRequest;
@@ -21,7 +19,7 @@ class AdvantageController extends Controller
         } else {
             return response()->json([
                 'status' => 404,
-                'error' => 'Advantage Content Not Found'
+                'error' => 'Content Not Found'
             ], 404);
         }
     }
@@ -77,32 +75,30 @@ class AdvantageController extends Controller
     }
     public function show(string $id)
     {
-        $homeService = Advantage::find($id);
-        if (!$homeService) {
+        $advantage = Advantage::find($id);
+        if (!$advantage) {
             return response()->json([
                 'error' => 'Not Found.'
             ], 404);
         }
 
         return response()->json([
-            'data' => new AdvantageResource($homeService)
+            'data' => new AdvantageResource($advantage)
         ], 200);
     }
-    public function update(Request $request, string $id)
+    public function update(AdvantageRequest $request, string $id)
     {
         try {
-            $homeService = Advantage::where('id', $id)->first();
-            if (!$homeService) {
+            $advantage = Advantage::where('id', $id)->first();
+            if (!$advantage) {
                 return response()->json([
                     'error' => 'Not Found.'
                 ], 404);
             }
 
-            $homeService->title = $request->input('title');
-            $homeService->subHeading = $request->input('subHeading');
-            $homeService->description = $request->input('description');
-            $homeService->image = $request->input('image');
-            $homeService->save();
+            $validated = $request->validated();
+
+            $advantage->update($validated);
 
             return response()->json([
                 'success' => "Content successfully updated."
@@ -115,14 +111,14 @@ class AdvantageController extends Controller
     }
     public function destroy(string $id)
     {
-        $homeService = Advantage::find($id);
-        if (!$homeService) {
+        $advantage = Advantage::find($id);
+        if (!$advantage) {
             return response()->json([
                 'error' => 'Not Found.'
             ], 404);
         }
 
-        $homeService->delete();
+        $advantage->delete();
 
         return response()->json([
             'success' => "Content successfully deleted."

@@ -6,8 +6,10 @@ use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\StripeController;
+use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\AdvantageController;
+use App\Http\Controllers\Api\HeroServiceController;
 use App\Http\Controllers\Api\HomeServiceController;
 use App\Http\Controllers\Api\ContactFormController;
 
@@ -57,3 +59,15 @@ Route::post('/product', [ProductController::class, 'store']);
 Route::get('/product/{id}', [ProductController::class, 'show']);
 Route::put('/product/{id}', [ProductController::class, 'update']);
 Route::delete('/product/{id}', [ProductController::class, 'destroy']);
+
+Route::get('/services', [ServiceController::class, 'index']);
+Route::post('/service', [ServiceController::class, 'store']);
+Route::get('/service/{id}', [ServiceController::class, 'show']);
+Route::put('/service/{id}', [ServiceController::class, 'update']);
+Route::delete('/service/{id}', [ServiceController::class, 'destroy']);
+
+Route::get('/servicesHero', [HeroServiceController::class, 'index']);
+Route::post('/serviceHero', [HeroServiceController::class, 'store']);
+Route::get('/serviceHero/{id}', [HeroServiceController::class, 'show']);
+Route::put('/serviceHero/{id}', [HeroServiceController::class, 'update']);
+Route::delete('/serviceHero/{id}', [HeroServiceController::class, 'destroy']);
