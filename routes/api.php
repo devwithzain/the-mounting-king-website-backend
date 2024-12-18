@@ -9,9 +9,11 @@ use App\Http\Controllers\Api\StripeController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\AdvantageController;
+use App\Http\Controllers\Api\HeroRequestController;
 use App\Http\Controllers\Api\HeroServiceController;
 use App\Http\Controllers\Api\HomeServiceController;
 use App\Http\Controllers\Api\ContactFormController;
+use App\Http\Controllers\Api\RequestServiceController;
 
 Route::post('/process-payment', [StripeController::class, 'processPayment'])->name('process.payment');
 
@@ -71,3 +73,13 @@ Route::post('/serviceHero', [HeroServiceController::class, 'store']);
 Route::get('/serviceHero/{id}', [HeroServiceController::class, 'show']);
 Route::put('/serviceHero/{id}', [HeroServiceController::class, 'update']);
 Route::delete('/serviceHero/{id}', [HeroServiceController::class, 'destroy']);
+
+Route::get('/servicesRequest', [HeroRequestController::class, 'index']);
+Route::post('/serviceRequest', [HeroRequestController::class, 'store']);
+Route::get('/serviceRequest/{id}', [HeroRequestController::class, 'show']);
+Route::put('/serviceRequest/{id}', [HeroRequestController::class, 'update']);
+Route::delete('/serviceRequest/{id}', [HeroRequestController::class, 'destroy']);
+
+Route::get('/requestServices', [RequestServiceController::class, 'index']);
+Route::post('/requestServices', [RequestServiceController::class, 'store']);
+Route::delete('/requestService/{id}', [RequestServiceController::class, 'destroy']);
