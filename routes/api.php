@@ -82,4 +82,5 @@ Route::delete('/serviceRequest/{id}', [HeroRequestController::class, 'destroy'])
 
 Route::get('/requestServices', [RequestServiceController::class, 'index']);
 Route::post('/requestServices', [RequestServiceController::class, 'store']);
+Route::get('/requestService/{id}', [RequestServiceController::class, 'show']);
 Route::delete('/requestService/{id}', [RequestServiceController::class, 'destroy']);

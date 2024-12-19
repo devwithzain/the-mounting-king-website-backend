@@ -59,6 +59,19 @@ class RequestServiceController extends Controller
             'service' => $service->load('steps.options'),
         ], 201);
     }
+    public function show(string $id)
+    {
+        $requestServices = RequestServices::with('steps.options')->find($id);
+        if (!$requestServices) {
+            return response()->json([
+                'error' => 'Not Found.'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $requestServices
+        ], 200);
+    }
     public function destroy(string $id)
     {
         $requestServices = RequestServices::find($id);
