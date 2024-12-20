@@ -5,17 +5,16 @@ use App\Http\Controllers\Api\FormController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\StripeController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\AdvantageController;
 use App\Http\Controllers\Api\HeroRequestController;
 use App\Http\Controllers\Api\HeroServiceController;
 use App\Http\Controllers\Api\HomeServiceController;
 use App\Http\Controllers\Api\ContactFormController;
+use App\Http\Controllers\Api\FormCheckoutController;
 use App\Http\Controllers\Api\RequestServiceController;
-
-Route::post('/process-payment', [StripeController::class, 'processPayment'])->name('process.payment');
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -84,3 +83,6 @@ Route::get('/requestServices', [RequestServiceController::class, 'index']);
 Route::post('/requestServices', [RequestServiceController::class, 'store']);
 Route::get('/requestService/{id}', [RequestServiceController::class, 'show']);
 Route::delete('/requestService/{id}', [RequestServiceController::class, 'destroy']);
+
+Route::post('/checkout', [CheckoutController::class, 'createSession']);
+Route::post('/formCheckout', [FormCheckoutController::class, 'createSession']);
