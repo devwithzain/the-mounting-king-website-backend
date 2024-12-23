@@ -65,7 +65,7 @@ class FormCheckoutController extends Controller
                         $address['aptUnitFloor'] ?? ''
                     ),
                 ],
-                'success_url' => env('FRONTEND_WEBSITE_URL') . '/thankyou?success=true',
+                'success_url' => env('FRONTEND_WEBSITE_URL') . '/?success=true',
                 'cancel_url' => env('FRONTEND_WEBSITE_URL') . '/request-a-demo?canceled=true',
             ]);
 
