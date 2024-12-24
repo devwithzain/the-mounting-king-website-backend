@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\ProductHeroController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\SlotController;
 use App\Http\Controllers\Api\FormController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\CartController;
@@ -73,6 +75,9 @@ Route::get('/serviceHero/{id}', [HeroServiceController::class, 'show']);
 Route::put('/serviceHero/{id}', [HeroServiceController::class, 'update']);
 Route::delete('/serviceHero/{id}', [HeroServiceController::class, 'destroy']);
 
+Route::get('/productHero', [ProductHeroController::class, 'index']);
+Route::put('/productHero/{id}', [ProductHeroController::class, 'update']);
+
 Route::get('/servicesRequest', [HeroRequestController::class, 'index']);
 Route::post('/serviceRequest', [HeroRequestController::class, 'store']);
 Route::get('/serviceRequest/{id}', [HeroRequestController::class, 'show']);
@@ -83,6 +88,11 @@ Route::get('/requestServices', [RequestServiceController::class, 'index']);
 Route::post('/requestServices', [RequestServiceController::class, 'store']);
 Route::get('/requestService/{id}', [RequestServiceController::class, 'show']);
 Route::delete('/requestService/{id}', [RequestServiceController::class, 'destroy']);
+
+Route::get('/slots', [SlotController::class, 'index']);
+Route::post('/slot', [SlotController::class, 'store']);
+Route::put('/slot/{id}', [SlotController::class, 'update']);
+Route::delete('/slot/{id}', [SlotController::class, 'destroy']);
 
 Route::post('/checkout', [CheckoutController::class, 'createSession']);
 Route::post('/formCheckout', [FormCheckoutController::class, 'createSession']);

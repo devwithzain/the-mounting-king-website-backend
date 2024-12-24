@@ -20,26 +20,16 @@ class ProductController extends Controller
     }
     public function store(ProductRequest $request)
     {
-        // Handle the valid data from the request
         $validatedData = $request->validated();
-
-        // Handle Image Uploads
         $imagePaths = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                // Generate a random name for the image
                 $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
-
-                // Store the image in the public directory
-                $imagePath = 'products/' . $imageName; // Store in the 'products' directory within public
+                $imagePath = 'products/' . $imageName;
                 Storage::disk('public')->put($imagePath, file_get_contents($image));
-
-                // Save the image path in the array
                 $imagePaths[] = $imagePath;
             }
         }
-
-        // Create the product in the database
         $product = Product::create([
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
@@ -48,10 +38,8 @@ class ProductController extends Controller
             'category' => $validatedData['category'],
             'size' => $validatedData['size'],
             'price' => $validatedData['price'],
-            'images' => json_encode($imagePaths), // Save the image paths as a JSON array
+            'images' => json_encode($imagePaths),
         ]);
-
-        // Return a response
         return response()->json([
             'message' => 'Product created successfully.',
             'product' => $product
