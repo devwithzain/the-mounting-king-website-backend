@@ -20,14 +20,14 @@ class ContactFormMail extends Mailable
     public $selectedAddress;
     public $subject;
 
-    public function __construct($subject, $userDetails, $selectedItems, $selectedDate, $selectedAddress)
+    public function __construct($subject, $userDetails, $selectedItems, $selectedDate)
     {
         $this->name = $userDetails['name'];
         $this->phone = $userDetails['phone'];
         $this->email = $userDetails['email'];
         $this->selectedItems = $selectedItems;
         $this->selectedDate = $selectedDate;
-        $this->selectedAddress = $selectedAddress;
+        $this->selectedAddress = $userDetails['selectedAddress'];
         $this->subject = $subject;
     }
     public function envelope(): Envelope
