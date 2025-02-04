@@ -21,10 +21,18 @@ class ServiceController extends Controller
     public function store(ServiceRequest $request)
     {
         $validatedData = $request->validated();
-
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
+            $imagePath = 'services/' . $imageName;
+            Storage::disk('public')->put($imagePath, file_get_contents($image));
+        }
         $service = Service::create([
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
+            'short_description' => $validatedData['short_description'],
+            'image' => $imagePath,
         ]);
 
         return response()->json([
@@ -47,10 +55,11 @@ class ServiceController extends Controller
     }
     public function update(ServiceRequest $request, string $id)
     {
+        // dd($request->all());
         try {
-            $product = Service::find($id);
-
-            if (!$product) {
+            $service = Service::find($id);
+            // dd($service);
+            if (!$service) {
                 return response()->json([
                     'error' => 'Not Found.'
                 ], 404);
@@ -58,25 +67,19 @@ class ServiceController extends Controller
 
             $validated = $request->validated();
 
-            // Handle the image
             if ($request->hasFile('image')) {
-                // Delete old image
-                if ($product->image) {
-                    Storage::disk('public')->delete($product->image);
-                }
-
-                // Store new image
-                $imageName = Str::random(32) . '.' . $request->image->getClientOriginalExtension();
-                Storage::disk('public')->put($imageName, file_get_contents($request->image));
-                $validated['image'] = $imageName;
+                $image = $request->file('image');
+                $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
+                $imagePath = 'services/' . $imageName;
+                Storage::disk('public')->put($imagePath, file_get_contents($image));
+                $validated['image'] = $imagePath;
             }
 
-            // Update the product
-            $product->update($validated);
+            $service->update($validated);
 
             return response()->json([
-                'success' => "Product successfully updated.",
-                'data' => new ServiceResource($product)
+                'success' => "Service successfully updated.",
+                'data' => new ServiceResource($service)
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

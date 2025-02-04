@@ -16,8 +16,8 @@ class ProductRequest extends FormRequest
             'category' => 'required|string|max:258',
             'shortDescription' => 'required|string',
             'description' => 'required|string',
-            'images' => 'required|array|min:1', // Ensure at least one image is uploaded
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'required|array|min:1',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg',
 
         ];
     }

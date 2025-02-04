@@ -71,7 +71,7 @@ class AuthController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:users,email,' . $user->id, // Only check for unique email excluding current user
+            'email' => 'sometimes|email|unique:users,email,' . $user->id,
         ]);
 
         if ($request->has('name')) {
