@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\EmployeeController;
 use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\ContactFormController;
 use App\Http\Controllers\Api\FormCheckoutController;
@@ -53,6 +54,12 @@ Route::post('/service', [ServiceController::class, 'store']);
 Route::get('/service/{id}', [ServiceController::class, 'show']);
 Route::put('/service/{id}', [ServiceController::class, 'update']);
 Route::delete('/service/{id}', [ServiceController::class, 'destroy']);
+
+Route::get('/employees', [EmployeeController::class, 'index']);
+Route::post('/employee', [EmployeeController::class, 'store']);
+Route::get('/employee/{id}', [EmployeeController::class, 'show']);
+Route::put('/employee/{id}', [EmployeeController::class, 'update']);
+Route::delete('/employee/{id}', [EmployeeController::class, 'destroy']);
 
 Route::get('/requestServices', [RequestServiceController::class, 'index']);
 Route::post('/requestService', [RequestServiceController::class, 'store']);
