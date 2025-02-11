@@ -51,7 +51,7 @@ Route::delete('/product/{id}', [ProductController::class, 'destroy']);
 Route::get('/services', [ServiceController::class, 'index']);
 Route::post('/service', [ServiceController::class, 'store']);
 Route::get('/service/{id}', [ServiceController::class, 'show']);
-Route::post('/service/{id}', [ServiceController::class, 'update']);
+Route::put('/service/{id}', [ServiceController::class, 'update']);
 Route::delete('/service/{id}', [ServiceController::class, 'destroy']);
 
 Route::get('/requestServices', [RequestServiceController::class, 'index']);
