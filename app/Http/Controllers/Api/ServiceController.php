@@ -21,20 +21,15 @@ class ServiceController extends Controller
     public function store(ServiceRequest $request)
     {
         $validatedData = $request->validated();
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
-            $imagePath = 'services/' . $imageName;
-            Storage::disk('public')->put($imagePath, file_get_contents($image));
-        }
+        $image = $request->file('image');
+        $imageName = 'services/' . Str::random(32) . '.' . $image->getClientOriginalExtension();
+        Storage::disk('public')->put($imageName, file_get_contents($image));
         $service = Service::create([
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
             'short_description' => $validatedData['short_description'],
-            'image' => $imagePath,
+            'image' => $imageName,
         ]);
-
         return response()->json([
             'message' => 'Service created successfully.',
             'service' => $service
@@ -55,38 +50,33 @@ class ServiceController extends Controller
     }
     public function update(ServiceRequest $request, string $id)
     {
-        // dd($request->all());
-        try {
-            $service = Service::find($id);
-            // dd($service);
-            if (!$service) {
-                return response()->json([
-                    'error' => 'Not Found.'
-                ], 404);
-            }
-
-            $validated = $request->validated();
-
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = Str::random(32) . '.' . $image->getClientOriginalExtension();
-                $imagePath = 'services/' . $imageName;
-                Storage::disk('public')->put($imagePath, file_get_contents($image));
-                $validated['image'] = $imagePath;
-            }
-
-            $service->update($validated);
-
+        $service = Service::find($id);
+        if (!$service) {
             return response()->json([
-                'success' => "Service successfully updated.",
-                'data' => new ServiceResource($service)
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => "Something went wrong!",
-                'message' => $e->getMessage()
-            ], 500);
+                'error' => 'Not Found.'
+            ], 404);
         }
+        $validatedData = $request->validated();
+        $service->title = $validatedData['title'];
+        $service->description = $validatedData['description'];
+        $service->short_description = $validatedData['short_description'];
+
+        if ($request->hasFile('image')) {
+            if ($service->image) {
+                Storage::disk('public')->delete($service->image);
+            }
+            $image = $request->file('image');
+            $imageName = 'services/' . Str::random(32) . '.' . $image->getClientOriginalExtension();
+            Storage::disk('public')->put($imageName, file_get_contents($image));
+
+            $service->image = $imageName;
+        }
+        $service->save();
+        return response()->json([
+            'message' => 'Service updated successfully.',
+            'service' => $service
+        ]);
+
     }
     public function destroy(string $id)
     {
@@ -96,11 +86,12 @@ class ServiceController extends Controller
                 'error' => 'Not Found.'
             ], 404);
         }
-
+        if ($service->image) {
+            Storage::disk('public')->delete($service->image);
+        }
         $service->delete();
-
         return response()->json([
-            'success' => "Service successfully deleted."
-        ], 200);
+            'message' => 'Service deleted successfully.'
+        ]);
     }
 }

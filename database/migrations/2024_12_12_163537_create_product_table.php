@@ -7,19 +7,21 @@ use Illuminate\Database\Migrations\Migration;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('table_slot', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->text('shortDescription');
             $table->text('description');
-            $table->json('days');
-            $table->json('timings');
-            $table->boolean('is_active')->default(true);
+            $table->string('image')->nullable();
+            $table->string('category');
+            $table->string('price');
+            $table->string('size');
+            $table->string('color');
             $table->timestamps();
         });
-
     }
     public function down(): void
     {
-        Schema::dropIfExists('table_slot');
+        Schema::dropIfExists('products');
     }
 };

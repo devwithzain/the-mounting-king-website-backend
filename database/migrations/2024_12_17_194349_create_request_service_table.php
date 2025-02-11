@@ -20,8 +20,6 @@ return new class extends Migration {
             $table->text('step_description');
             $table->timestamps();
         });
-
-        // Create options table with correct foreign key to request_services_steps
         Schema::create('request_services_options', function (Blueprint $table) {
             $table->id();
             $table->foreignId('request_services_steps_id')->constrained('request_services_steps')->onDelete('cascade');
