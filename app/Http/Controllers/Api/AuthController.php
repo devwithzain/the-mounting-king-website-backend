@@ -82,7 +82,6 @@ class AuthController extends Controller
                 'name' => 'nullable|string|max:255',
                 'email' => 'nullable|email|unique:users,email,' . $user->id,
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
-                'password' => 'nullable|min:8|confirmed',
             ]);
 
             // Update name
@@ -90,8 +89,14 @@ class AuthController extends Controller
                 $user->name = Str::lower($validatedData['name']);
             }
 
-            // Update email
-            if ($request->has('email')) {
+            // Check if the email is being updated and if it already exists
+            if ($request->has('email') && $request->email !== $user->email) {
+                $existingUser = User::where('email', $request->email)->first();
+                if ($existingUser) {
+                    return response()->json([
+                        'error' => 'Email already exists.'
+                    ], 409);
+                }
                 $user->email = Str::lower($validatedData['email']);
             }
 
@@ -111,11 +116,6 @@ class AuthController extends Controller
                 $user->image = $imageName;
             }
 
-            // Update password only if provided
-            if ($request->filled('password')) {
-                $user->password = Hash::make($validatedData['password']);
-            }
-
             // Save updated user details
             $user->save();
 
@@ -127,7 +127,7 @@ class AuthController extends Controller
 
         } catch (ValidationException $e) {
             return response()->json([
-                'message' => "Validation failed.",
+                'message' => "Email already exists.",
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {

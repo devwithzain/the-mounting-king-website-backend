@@ -17,16 +17,13 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::delete("/deleteUser/{id}", [AuthController::class, "deleteUser"]);
 Route::get("/getAllUsers", [AuthController::class, "getAllUsers"]);
-Route::middleware(['auth:sanctum', 'isAdmin'])->group(function () {
-    // Route::get("/getAllUsers", [AuthController::class, "getAllUsers"]);
-});
+Route::delete("/deleteUser/{id}", [AuthController::class, "deleteUser"]);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post("/logout", [AuthController::class, "logout"]);
     Route::get("/profile", [AuthController::class, "profile"]);
-    Route::put('/profile/update/{id}', [AuthController::class, 'updateProfile']);
+    Route::post('/profile/update/{id}', [AuthController::class, 'updateProfile']);
     Route::delete('/profile/delete', [AuthController::class, 'deleteAccount']);
     Route::get('/cart', [CartController::class, 'index']);
     Route::post('/cart', [CartController::class, 'store']);
