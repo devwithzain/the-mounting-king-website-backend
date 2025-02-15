@@ -31,11 +31,10 @@ class AuthController extends Controller
     }
     public function register(RegisterRequest $request)
     {
-
         $userEmail = User::where('email', $request->email)->first();
 
         if ($userEmail) {
-            return response()->json(['error' => 'Email already exists'], 409); // 409 Conflict
+            return response()->json(['error' => 'Email already exists'], 409); 
         }
 
         $user = User::create([

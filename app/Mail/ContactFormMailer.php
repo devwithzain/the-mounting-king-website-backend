@@ -19,8 +19,6 @@ class ContactFormMailer extends Mailable
     public $tvsize;
     public $specialRequest;
     public $subject;
-
-
     public function __construct($subject, $userDetails, )
     {
         $this->name = $userDetails['name'];
