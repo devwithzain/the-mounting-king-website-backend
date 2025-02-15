@@ -8,7 +8,7 @@ class ProductRequest extends FormRequest
 {
     public function rules(): array
     {
-        return [
+        $rules = [
             'title' => 'required|string|max:258',
             'price' => 'required|string|max:258',
             'color' => 'required|string|max:258',
@@ -16,10 +16,17 @@ class ProductRequest extends FormRequest
             'category' => 'required|string|max:258',
             'shortDescription' => 'required|string',
             'description' => 'required|string',
-            'images' => 'required|array|min:1',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg',
-
         ];
+
+        if ($this->isMethod('POST')) {
+            $rules['image'] = 'required|array|min:1';
+            $rules['image.*'] = 'image|mimes:jpeg,png,jpg,gif,svg';
+        } else {
+            $rules['image'] = 'nullable|array|min:1';
+            $rules['image.*'] = 'image|mimes:jpeg,png,jpg,gif,svg';
+        }
+
+        return $rules;
     }
     public function messages()
     {
@@ -31,10 +38,10 @@ class ProductRequest extends FormRequest
             'category.required' => 'The price category is required!',
             'description.required' => 'The description field is required!',
             'shortDescription.required' => 'The short description field is required!',
-            'images.required' => 'At least one image is required.',
-            'images.array' => 'Images must be an array.',
-            'images.*.image' => 'Each file must be an image.',
-            'images.*.mimes' => 'Only jpeg, png, jpg, gif, svg images are allowed.',
+            'image.required' => 'At least one image is required.',
+            'image.array' => 'Image must be an array.',
+            'image.*.image' => 'Each file must be an image.',
+            'image.*.mimes' => 'Only jpeg, png, jpg, gif, svg images are allowed.',
         ];
     }
 }
