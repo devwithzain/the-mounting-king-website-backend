@@ -66,7 +66,7 @@ class FormCheckoutController extends Controller
                     ),
                 ],
                 'success_url' => env('FRONTEND_WEBSITE_URL') . '/?success=true',
-                'cancel_url' => env('FRONTEND_WEBSITE_URL') . '/request-a-demo?canceled=true',
+                'cancel_url' => env('FRONTEND_WEBSITE_URL') . '/book-now?canceled=true',
             ]);
 
             return response()->json(['url' => $session->url], 200);

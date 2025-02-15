@@ -4,7 +4,37 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>{{ $subject }}</title>
+   <style>
+   body {
+      font-family: sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+   }
+
+   h1 {
+      color: #333;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+   }
+
+   p {
+      background-color: white;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+   }
+
+   strong {
+      color: #444;
+      display: inline-block;
+      width: 140px;
+   }
+   </style>
 </head>
 
 <body>
